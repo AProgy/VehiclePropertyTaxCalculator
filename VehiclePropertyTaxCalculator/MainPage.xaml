@@ -1,0 +1,144 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="VehiclePropertyTaxCalculator.MainPage"
+             Title="VEHICLE PROPERTY TAX CALCULATOR"
+             Padding="5,10,5,10">
+    <ContentPage.Resources>
+        <Style ApplyToDerivedTypes="True" TargetType="Picker">
+            <Setter Property="FontSize" Value="Medium"/>
+            <Setter Property="HorizontalTextAlignment" Value="Center"/>
+            <Setter Property="BackgroundColor"  Value="LightSeaGreen"/>
+            <Setter Property="TextColor" Value="White"/>
+            <Setter Property="FontSize" Value="Large"/>
+        </Style>
+
+        <Style ApplyToDerivedTypes="True" TargetType="Label">
+            <Setter Property="VerticalOptions" Value="Center"/>
+            <Setter Property="FontSize" Value="18"/>
+            <Setter Property="TextColor" Value="{AppThemeBinding Light={StaticResource Black},Dark={StaticResource White}}"/>
+        </Style>
+
+        <Style ApplyToDerivedTypes="True" TargetType="Entry">
+            <Setter Property="MaxLength" Value="4"/>
+            <Setter Property="Keyboard" Value="Numeric"/>
+            <Setter Property="FontSize" Value="Medium"/>
+        </Style>
+
+        <Style ApplyToDerivedTypes="True" TargetType="BoxView">
+            <Setter Property="Color" Value="{AppThemeBinding Light={StaticResource Black},Dark={StaticResource White}}"/>
+        </Style>
+
+        <Style ApplyToDerivedTypes="True" TargetType="Button">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="BackgroundColor" Value="LightSeaGreen" />
+            <Setter Property="FontSize" Value="Large"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <VerticalStackLayout
+        Spacing="20">
+        <Picker
+            x:Name="TypePicker"
+            Title="VEHICLE TYPE"
+            ItemsSource="{Binding Types}"
+            SelectedItem="{Binding SelectedVehicle}"/>
+
+        <Grid
+            HorizontalOptions="FillAndExpand"
+            ColumnDefinitions="*,0.5*,0.2*"
+            RowDefinitions="*,*,*,0.2*"
+            RowSpacing="15">
+            <Grid.Triggers>
+                <DataTrigger TargetType="Grid" Binding="{Binding Source={x:Reference TypePicker},Path=SelectedIndex}" Value="-1">
+                    <Setter Property="IsVisible" Value="False"/>
+                </DataTrigger>
+            </Grid.Triggers>
+
+            <Label
+                Text="DATE OF MANUFACTURE"/>
+            <Entry
+                Grid.Column="1"
+                Grid.ColumnSpan="2"
+                HorizontalTextAlignment="Center"
+                TextChanged="EntryValueChanged"
+                Text="{Binding DateOfManufacture}"/>
+            <Label
+                Grid.Row="1"
+                Text="ENGINE POWER"/>
+            <Entry
+                Grid.Row="1"
+                Grid.Column="1"
+                HorizontalTextAlignment="Center"
+                TextChanged="EntryValueChanged"
+                Text="{Binding EnginePower}"/>
+            <Label
+                Grid.Row="1"
+                Grid.Column="2"
+                HorizontalOptions="CenterAndExpand"
+                Text="HP"/>
+            <Button
+                x:Name="CalculateButton"
+                Grid.Row="2"
+                Grid.ColumnSpan="3"
+                Text="CALCULATE"
+                Command="{Binding CalculateTax}"/>
+            <BoxView
+                Grid.Row="3"
+                Grid.ColumnSpan="3"
+                CornerRadius="10"
+                HeightRequest="5"/>
+        </Grid>
+
+        <Grid
+            RowDefinitions="*,2*,2*,2*"
+            ColumnDefinitions="*,*"
+            RowSpacing="15"
+            ColumnSpacing="6">
+            <Grid.Triggers>
+                <DataTrigger TargetType="Grid" Binding="{Binding IsCalculateButtonClicked}" Value="False">
+                    <Setter Property="IsVisible" Value="False"/>
+                </DataTrigger>
+            </Grid.Triggers>
+
+            <Label
+                HorizontalOptions="CenterAndExpand"
+                Grid.ColumnSpan="2"
+                FontSize="Medium"
+                Text="{Binding TaxInformation}"/>
+            <Label
+                HorizontalOptions="End"
+                Grid.Row="1"
+                FontSize="Large"
+                Text="{Binding CalculatedTaxAMD}"/>
+            <Label
+                HorizontalOptions="Start"
+                Grid.Row="1"
+                Grid.Column="1"
+                FontSize="Large"
+                Text="AMD"/>
+            <Label
+                HorizontalOptions="End"
+                Grid.Row="2"
+                FontSize="Large"
+                Text="{Binding CalculatedTaxUSD}"/>
+            <Label
+                HorizontalOptions="Start"
+                Grid.Row="2"
+                Grid.Column="1"
+                FontSize="Large"
+                Text="USD"/>
+            <Label
+                HorizontalOptions="End"
+                Grid.Row="3"
+                FontSize="Large"
+                Text="{Binding CalculatedTaxRUB}"/>
+            <Label
+                HorizontalOptions="Start"
+                Grid.Row="3"
+                Grid.Column="1"
+                FontSize="Large"
+                Text="RUB"/>
+        </Grid>
+    </VerticalStackLayout>
+</ContentPage>
